@@ -1,0 +1,22 @@
+﻿namespace SistemaFarmacia.AplicacionWed.Models.ViewModels
+{
+    public class VMCompra
+    {
+        public int IdCompra { get; set; }
+
+        public DateTime? FechaHoraCompra { get; set; }
+
+        public decimal? TotalCompra { get; set; }
+
+        public int? CantidadProductosCompra { get; set; }
+
+        public int? IdProveedor { get; set; }
+
+        public int? LoteInterno { get; set; }
+
+        public int? LoteProveedor { get; set; }
+
+        public DateTime? fechaVencimiento { get; set; }
+
+    }
+}

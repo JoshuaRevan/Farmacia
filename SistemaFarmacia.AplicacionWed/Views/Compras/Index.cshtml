@@ -1,0 +1,235 @@
+﻿@{
+    ViewData["Title"] = "Compras";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Estilos {
+    <!-- ============================================================
+    =ESTILOS PARA ESTA PAGINA
+    ===============================================================-->
+    <link rel="stylesheet" href="~/vendor/datatables/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/vendor/datatables/extensiones/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="~/vendor/datatables/extensiones/css/buttons.dataTables.min.css">
+}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-second-primary">
+            <h6 class="m-0 font-weight-bold text-white">Lista de Compras</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#modalData">
+                        <i class="fas fa-plus-circle"></i> Nueva Compra
+                    </button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="tbdata" cellspacing="0" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>IdCompra</th>
+                                    <th>Producto</th>
+                                    <th>Proveedor</th>
+                                    <th>Cantidad</th>
+                                    <th>PrecioCompra</th>
+                                    <th>PrecioVenta</th>
+                                    <th>LoteProveedor</th>
+                                    <th>LoteInterno</th>
+                                    <th>FechaHoraCompra</th>
+                                    <th>FechaVencimiento</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Paracetamol 500mg - Tableta - Bayer</td>
+                                    <td>Farmacéutica ABC S.A.</td>
+                                    <td>100</td>
+                                    <td>$15.50</td>
+                                    <td>$25.00</td>
+                                    <td>LP2024001</td>
+                                    <td>LI2024001</td>
+                                    <td>24/07/2025 08:30</td>
+                                    <td>24/12/2026</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm mr-1">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Ibuprofeno 400mg - Cápsula - Pfizer</td>
+                                    <td>Distribuidora XYZ Ltda.</td>
+                                    <td>50</td>
+                                    <td>$22.75</td>
+                                    <td>$35.00</td>
+                                    <td>LP2024002</td>
+                                    <td>LI2024002</td>
+                                    <td>24/07/2025 09:15</td>
+                                    <td>15/11/2026</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm mr-1">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalData" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Nueva Compra</h6>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" value="0" id="txtId">
+
+                        <!-- Primera fila -->
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label for="cmbProducto">Producto (Nombre + Presentación + Marca) <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <select class="form-control form-control-sm" id="cmbProducto" style="width: 100%;">
+                                        <option value="">Seleccione un producto</option>
+                                        <option value="1">Paracetamol 500mg - Tableta - Bayer</option>
+                                        <option value="2">Ibuprofeno 400mg - Cápsula - Pfizer</option>
+                                        <option value="3">Aspirina 100mg - Tableta - Bayer</option>
+                                        <option value="4">Amoxicilina 500mg - Cápsula - Sandoz</option>
+                                        <option value="5">Omeprazol 20mg - Cápsula - Teva</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-add-option" type="button" id="btnAgregarProducto" title="Agregar nuevo producto">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="cmbProveedor">Proveedor <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <select class="form-control form-control-sm" id="cmbProveedor" style="width: 100%;">
+                                        <option value="">Seleccione un proveedor</option>
+                                        <option value="1">Farmacéutica ABC S.A.</option>
+                                        <option value="2">Distribuidora XYZ Ltda.</option>
+                                        <option value="3">Laboratorios DEF Corp.</option>
+                                        <option value="4">Suministros Médicos GHI</option>
+                                        <option value="5">Proveedora JKL S.A.S.</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-add-option" type="button" id="btnAgregarProveedor" title="Agregar nuevo proveedor">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Segunda fila -->
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                <label for="txtPrecioCompra">Precio de Compra <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" class="form-control form-control-sm" id="txtPrecioCompra" step="0.01" min="0">
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="txtFechaHoraCompra">Fecha y Hora de Compra <span class="text-danger">*</span></label>
+                                <input type="datetime-local" class="form-control form-control-sm" id="txtFechaHoraCompra">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="txtCantidad">Cantidad <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control form-control-sm" id="txtCantidad" min="1">
+                            </div>
+                        </div>
+
+                        <!-- Tercera fila -->
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label for="txtLoteProveedor">Lote del Proveedor</label>
+                                <input type="text" class="form-control form-control-sm" id="txtLoteProveedor" placeholder="Ej: LP2024001">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="txtLoteInterno">Lote Interno</label>
+                                <input type="text" class="form-control form-control-sm" id="txtLoteInterno" placeholder="Ej: LI2024001">
+                            </div>
+                        </div>
+
+                        <!-- Cuarta fila -->
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label for="txtFechaVencimiento">Fecha de Vencimiento</label>
+                                <input type="date" class="form-control form-control-sm" id="txtFechaVencimiento">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="txtPrecioVenta">Precio de Venta al Público <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" class="form-control form-control-sm" id="txtPrecioVenta" step="0.01" min="0">
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm" type="button" id="btnGuardar">
+                        <i class="fas fa-save"></i> Guardar Compra
+                    </button>
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+@section Scripts {
+    <!-- ============================================================
+    =SCRIPTS PARA ESTA PAGINA
+    ===============================================================-->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="~/vendor/datatables/extensiones/js/dataTables.responsive.min.js"></script>
+
+    <script src="~/vendor/datatables/extensiones/js/dataTables.buttons.min.js"></script>
+    <script src="~/vendor/datatables/extensiones/js/jszip.min.js"></script>
+    <script src="~/vendor/datatables/extensiones/js/buttons.html5.min.js"></script>
+    <script src="~/vendor/datatables/extensiones/js/buttons.print.min.js"></script>
+
+
+
+    <!-- SOLO ES DE EJEMPLO - IGNORAR -->
+    <script src="~/js/vistas/datatables-demo.js"></script>>
+}

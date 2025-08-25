@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SistemaFarmacia.BLL\SistemaFarmacia.BLL.csproj" />
+    <ProjectReference Include="..\SistemaFarmacia.DAL\SistemaFarmacia.DAL.csproj" />
+  </ItemGroup>
+
+</Project>

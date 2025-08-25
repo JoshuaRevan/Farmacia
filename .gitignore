@@ -1,0 +1,54 @@
+# Archivos compilados de C#
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.cache
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Paquetes NuGet (se restauran automaticamente)
+packages/
+*.nupkg
+.nuget/
+nuget.exe
+
+# Archivos temporales
+*.swp
+*.swo
+*.tmp
+
+# Archivos de base de datos local (solo tu entorno)
+*.mdf
+*.ldf
+
+# Configuraciones sensibles (no subir contraseñas)
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# Logs
+*.log
+logs/
+
+# Directorio de publicacin
+publish/
+wwwroot/lib/
+
+# Archivos de Rider/JetBrains (si llegas a usarlo)
+.idea/
+
+# Archivos de VS Code
+.vscode/
+
+# Archivos de sistema (Windows/Mac)
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store

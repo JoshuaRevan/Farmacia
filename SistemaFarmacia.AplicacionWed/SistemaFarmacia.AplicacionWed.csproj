@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\vistas\Marca_Index.js" />
+    <Content Remove="wwwroot\js\vistas\Presentacion_Index.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\vistas\Marca_Index.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\vistas\Presentacion_Index.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\vistas\Marca_Index.js" />
+    <None Include="wwwroot\js\vistas\Presentacion_Index.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <ProjectReference Include="..\SistemaFarmacia.BLL\SistemaFarmacia.BLL.csproj" />
+	  <ProjectReference Include="..\SistemaFarmacia.DAL\SistemaFarmacia.DAL.csproj" />
+    <ProjectReference Include="..\SistemaFarmacia.Entity\SistemaFarmacia.Entity.csproj" />
+    <ProjectReference Include="..\SistemaFarmacia.IOC\SistemaFarmacia.IOC.csproj" />
+  </ItemGroup>
+
+</Project>

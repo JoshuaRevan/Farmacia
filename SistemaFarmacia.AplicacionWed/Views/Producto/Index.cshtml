@@ -1,0 +1,224 @@
+﻿@{
+    ViewData["Title"] = "Producto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Estilos {
+    <!-- ============================================================
+    =ESTILOS PARA ESTA PAGINA
+    ===============================================================-->
+    <link rel="stylesheet" href="~/vendor/datatables/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/vendor/datatables/extensiones/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="~/vendor/datatables/extensiones/css/buttons.dataTables.min.css">
+}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-second-primary">
+            <h6 class="m-0 font-weight-bold text-white">Lista de Productos</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#modalData">
+                        <i class="fas fa-plus-circle"></i> Nuevo Producto
+                    </button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="tbdata" cellspacing="0" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Producto</th>
+                                    <th>Descripción del Producto</th>
+                                    <th>Ubicación</th>
+                                    <th>Marca</th>
+                                    <th>Presentación</th>
+                                    <th>Stock</th>
+                                    <th>Precio Venta Público</th>
+                                    <th>Fecha Vencimiento</th>
+                                    <th>Lote Interno</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Paracetamol 500mg</td>
+                                    <td>Analgésico y antipirético de acción rápida</td>
+                                    <td>Estante A-1</td>
+                                    <td>Bayer</td>
+                                    <td>Tableta</td>
+                                    <td>150</td>
+                                    <td>$25.00</td>
+                                    <td>24/12/2026</td>
+                                    <td>LI2024001</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm mr-1" onclick="editarProducto(1)">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="eliminarProducto(1)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ibuprofeno 400mg</td>
+                                    <td>Antiinflamatorio no esteroideo</td>
+                                    <td>Estante B-2</td>
+                                    <td>Pfizer</td>
+                                    <td>Cápsula</td>
+                                    <td>75</td>
+                                    <td>$35.00</td>
+                                    <td>15/11/2026</td>
+                                    <td>LI2024002</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm mr-1" onclick="editarProducto(2)">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="eliminarProducto(2)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Aspirina 100mg</td>
+                                    <td>Antiagregante plaquetario para prevención cardiovascular</td>
+                                    <td>Estante A-3</td>
+                                    <td>Bayer</td>
+                                    <td>Tableta</td>
+                                    <td>200</td>
+                                    <td>$18.50</td>
+                                    <td>30/08/2026</td>
+                                    <td>LI2024003</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm mr-1" onclick="editarProducto(3)">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="eliminarProducto(3)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalData" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Nuevo Producto</h6>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" value="0" id="txtId">
+
+                        <!-- Primera fila -->
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label for="txtNombreProducto">Nombre del Producto <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-sm" id="txtNombreProducto" placeholder="Ej: Paracetamol 500mg">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="txtUbicacion">Ubicación <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-sm" id="txtUbicacion" placeholder="Ej: Estante A-1">
+                            </div>
+                        </div>
+
+                        <!-- Segunda fila -->
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <label for="txtDescripcionProducto">Descripción del Producto</label>
+                                <textarea class="form-control form-control-sm" id="txtDescripcionProducto" rows="2" placeholder="Descripción detallada del producto..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Tercera fila - Marca y Presentación con botones -->
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label for="cmbMarca">Marca <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <select class="form-control form-control-sm" id="cmbMarca" style="width: 100%;">
+                                        <option value="">Seleccione una marca</option>
+                                        <option value="1">Bayer</option>
+                                        <option value="2">Pfizer</option>
+                                        <option value="3">Sandoz</option>
+                                        <option value="4">Teva</option>
+                                        <option value="5">Novartis</option>
+                                        <option value="6">GSK</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-add-option" type="button" id="btnAgregarMarca" title="Agregar nueva marca">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="cmbPresentacion">Presentación <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <select class="form-control form-control-sm" id="cmbPresentacion" style="width: 100%;">
+                                        <option value="">Seleccione una presentación</option>
+                                        <option value="1">Tableta</option>
+                                        <option value="2">Cápsula</option>
+                                        <option value="3">Jarabe</option>
+                                        <option value="4">Inyección</option>
+                                        <option value="5">Crema</option>
+                                        <option value="6">Gotas</option>
+                                        <option value="7">Supositorio</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-add-option" type="button" id="btnAgregarPresentacion" title="Agregar nueva presentación">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm" type="button" id="btnGuardar">
+                        <i class="fas fa-save"></i> Guardar Producto
+                    </button>
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- ============================================================
+    =SCRIPTS PARA ESTA PAGINA
+    ===============================================================-->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="~/vendor/datatables/extensiones/js/dataTables.responsive.min.js"></script>
+
+    <script src="~/vendor/datatables/extensiones/js/dataTables.buttons.min.js"></script>
+    <script src="~/vendor/datatables/extensiones/js/jszip.min.js"></script>
+    <script src="~/vendor/datatables/extensiones/js/buttons.html5.min.js"></script>
+    <script src="~/vendor/datatables/extensiones/js/buttons.print.min.js"></script>
+
+    <!-- SOLO ES DE EJEMPLO - IGNORAR -->
+    <script src="~/js/vistas/datatables-demo.js"></script>
+}
