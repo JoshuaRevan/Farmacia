@@ -9,6 +9,7 @@ using SistemaFarmacia.DAL.DBContext;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using SistemaFarmacia.DAL.Interfaces;
+using SistemaFarmacia.Entity;
 
 
 namespace sistemaFarmacia.DAL.Implementacion
@@ -19,7 +20,7 @@ namespace sistemaFarmacia.DAL.Implementacion
 
         public GenericRepository(FarmaciaTroyaContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task<TEntity> Obtener(Expression<Func<TEntity, bool>> filtro, string includeProperties = " ")
@@ -48,13 +49,21 @@ namespace sistemaFarmacia.DAL.Implementacion
         {
             try
             {
+                Console.WriteLine($"=== DEBUG REPOSITORY ===");
+                Console.WriteLine($"Entidad recibida: {entidad != null}");
+                if (entidad is Producto producto)
+                {
+                    Console.WriteLine($"Producto.Nombre: {producto.NombreProducto}");
+                    Console.WriteLine($"Producto.IdMarca: {producto.IdMarca}");
+                }
                 _dbContext.Set<TEntity>().Add(entidad);
                 await _dbContext.SaveChangesAsync();
                 return entidad;
             }
-            catch
+            catch(Exception ex)
             {
-                throw;
+               Console.WriteLine($"Error en Crear: {ex.Message}");
+        throw;
             }
         }
         public async Task<bool> Editar(TEntity entidad)

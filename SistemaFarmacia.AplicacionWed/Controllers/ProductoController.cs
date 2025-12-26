@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using SistemaFarmacia.BLL.Models;
 using AutoMapper;
 using Newtonsoft.Json;
 using SistemaFarmacia.AplicacionWed.Models.ViewModels;
@@ -33,8 +34,9 @@ namespace SistemaFarmacia.AplicacionWed.Controllers
         [HttpGet]
         public async Task<IActionResult> Lista()
         {
-            List<VMProducto> vmProductoLista = _mapper.Map<List<VMProducto>>(await _productoService.Lista());
-            return StatusCode(StatusCodes.Status200OK, new {data = vmProductoLista});
+            List<ProductoListaDto> productoDtos = await _productoService.Lista();
+            return Ok(new { data = productoDtos }); // ← Retornar DTOs directamente
+
         }
 
         [HttpPost]

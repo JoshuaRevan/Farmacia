@@ -18,4 +18,7 @@ public partial class PrecioProducto
     public virtual Proveedore? IdProveedorNavigation { get; set; }
 
     public virtual ICollection<Venta> Venta { get; set; } = new List<Venta>();
+
+    //relationship with purchases
+    public virtual ICollection<Compra> Compras { get; set; } = new List<Compra>();
 }

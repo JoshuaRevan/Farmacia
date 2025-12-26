@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SistemaFarmacia.DAL\SistemaFarmacia.DAL.csproj" />
     <ProjectReference Include="..\SistemaFarmacia.Entity\SistemaFarmacia.Entity.csproj" />
-	  <ProjectReference Include="..\SistemaFarmacia.AplicacionWed\SistemaFarmacia.AplicacionWed.csproj" />
   </ItemGroup>
 
 </Project>

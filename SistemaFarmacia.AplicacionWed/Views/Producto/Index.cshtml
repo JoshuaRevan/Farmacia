@@ -21,7 +21,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-3">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#modalData">
+                    <button class="btn btn-success" id="btnNuevo">
                         <i class="fas fa-plus-circle"></i> Nuevo Producto
                     </button>
                 </div>
@@ -33,10 +33,13 @@
                         <table class="table table-bordered" id="tbdata" cellspacing="0" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Nombre del Producto</th>
+                                    <th style="display:none;">Id Producto</th> <!-- Oculto -->
+                                    <th>Nombre</th>
                                     <th>Descripción del Producto</th>
                                     <th>Ubicación</th>
+                                    <th style="display:none;">Id Marca</th> <!-- Oculto -->
                                     <th>Marca</th>
+                                    <th style="display:none;">Id Presentación</th> <!-- Oculto -->
                                     <th>Presentación</th>
                                     <th>Stock</th>
                                     <th>Precio Venta Público</th>
@@ -46,63 +49,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Paracetamol 500mg</td>
-                                    <td>Analgésico y antipirético de acción rápida</td>
-                                    <td>Estante A-1</td>
-                                    <td>Bayer</td>
-                                    <td>Tableta</td>
-                                    <td>150</td>
-                                    <td>$25.00</td>
-                                    <td>24/12/2026</td>
-                                    <td>LI2024001</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm mr-1" onclick="editarProducto(1)">
-                                            <i class="fas fa-pencil-alt"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" onclick="eliminarProducto(1)">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Ibuprofeno 400mg</td>
-                                    <td>Antiinflamatorio no esteroideo</td>
-                                    <td>Estante B-2</td>
-                                    <td>Pfizer</td>
-                                    <td>Cápsula</td>
-                                    <td>75</td>
-                                    <td>$35.00</td>
-                                    <td>15/11/2026</td>
-                                    <td>LI2024002</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm mr-1" onclick="editarProducto(2)">
-                                            <i class="fas fa-pencil-alt"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" onclick="eliminarProducto(2)">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Aspirina 100mg</td>
-                                    <td>Antiagregante plaquetario para prevención cardiovascular</td>
-                                    <td>Estante A-3</td>
-                                    <td>Bayer</td>
-                                    <td>Tableta</td>
-                                    <td>200</td>
-                                    <td>$18.50</td>
-                                    <td>30/08/2026</td>
-                                    <td>LI2024003</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm mr-1" onclick="editarProducto(3)">
-                                            <i class="fas fa-pencil-alt"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" onclick="eliminarProducto(3)">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -152,12 +99,7 @@
                                 <div class="input-group input-group-sm">
                                     <select class="form-control form-control-sm" id="cmbMarca" style="width: 100%;">
                                         <option value="">Seleccione una marca</option>
-                                        <option value="1">Bayer</option>
-                                        <option value="2">Pfizer</option>
-                                        <option value="3">Sandoz</option>
-                                        <option value="4">Teva</option>
-                                        <option value="5">Novartis</option>
-                                        <option value="6">GSK</option>
+                                        <option value=""></option>
                                     </select>
                                     <div class="input-group-append">
                                         <button class="btn btn-add-option" type="button" id="btnAgregarMarca" title="Agregar nueva marca">
@@ -171,13 +113,7 @@
                                 <div class="input-group input-group-sm">
                                     <select class="form-control form-control-sm" id="cmbPresentacion" style="width: 100%;">
                                         <option value="">Seleccione una presentación</option>
-                                        <option value="1">Tableta</option>
-                                        <option value="2">Cápsula</option>
-                                        <option value="3">Jarabe</option>
-                                        <option value="4">Inyección</option>
-                                        <option value="5">Crema</option>
-                                        <option value="6">Gotas</option>
-                                        <option value="7">Supositorio</option>
+                                        <option value=""></option>
                                     </select>
                                     <div class="input-group-append">
                                         <button class="btn btn-add-option" type="button" id="btnAgregarPresentacion" title="Agregar nueva presentación">
@@ -219,6 +155,8 @@
     <script src="~/vendor/datatables/extensiones/js/buttons.html5.min.js"></script>
     <script src="~/vendor/datatables/extensiones/js/buttons.print.min.js"></script>
 
+    <script src="~/js/vistas/Producto_Index.js"></script>
+
     <!-- SOLO ES DE EJEMPLO - IGNORAR -->
-    <script src="~/js/vistas/datatables-demo.js"></script>
+    @*<script src="~/js/vistas/datatables-demo.js"></script>*@
 }

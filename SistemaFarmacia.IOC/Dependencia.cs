@@ -28,7 +28,7 @@ namespace SistemaFarmacia.IOC
                 Options.UseSqlServer(Configuration.GetConnectionString("CadenaSQL"));
             });
 
-            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<IVentaRepository, VentaRepository>();
 
@@ -40,6 +40,7 @@ namespace SistemaFarmacia.IOC
             services.AddScoped<IProveedorService, ProveedorService>();
             services.AddScoped<IMarcaService, MarcaService>();
             services.AddScoped<IProductoService, ProductoService>();
+            services.AddScoped<ICompraService, CompraService>();
         }
 
     }

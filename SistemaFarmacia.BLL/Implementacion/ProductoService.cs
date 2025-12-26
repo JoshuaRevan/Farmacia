@@ -8,7 +8,8 @@ using SistemaFarmacia.DAL.Implementacion;
 using SistemaFarmacia.DAL.Interfaces;
 using SistemaFarmacia.BLL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using SistemaFarmacia.AplicacionWed.Models.ViewModels;
+using SistemaFarmacia.BLL.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SistemaFarmacia.BLL.Implementacion
 {
@@ -22,8 +23,78 @@ namespace SistemaFarmacia.BLL.Implementacion
             _TransaccioneRespositorio = transaccioneRespositorio;
         }
 
-        public async Task<List<VMProducto>> Lista()
+        public async Task<List<ProductoListaDto>> Lista()
         {
+            try
+            {
+                IQueryable<Producto> query = await _ProductoRespositorio.Consultar();
+
+               query = query
+                    .Include(p => p.IdMarcaNavigation)
+                    .Include(p => p.IdPresentacionNavigation)
+                    .Include(p => p.Transacciones)
+                        .ThenInclude(t => t.IdCompraNavigation)
+                    .Include(p => p.PrecioProductos);
+
+                var productos = await query
+                    .Select(p => new ProductoListaDto
+                    {
+                        IdProducto = p.IdProducto,
+                        NombreProducto = p.NombreProducto,
+                        Descripcion = p.Descripcion,
+                        Ubicacion = p.Ubicacion,
+                        IdMarca = p.IdMarca,
+                        NombreMarca = p.IdMarcaNavigation.NombreMarca,
+                        IdPresentacion = p.IdPresentacion,
+                        NombrePresentacion = p.IdPresentacionNavigation.TipoPresentacion,
+
+
+                        // Cantidad
+                        Cantidad = p.Transacciones.Sum(t => (int?)t.Cantidad ?? 0),
+
+                        //Precio
+                        Precio = p.PrecioProductos
+                        .OrderByDescending(pp => pp.IdPrecioProducto)
+                        .Select(pp => pp.Precio)
+                        .FirstOrDefault(),
+                        //Fecha de Vencimineto del Producto
+                        FechaVencimiento = p.Transacciones
+                        .Where(t => t.TipoTransaccion == "Compras" && t.IdCompraNavigation != null)
+                        .OrderBy(t => t.IdCompraNavigation.FechaVencimiento)
+                        .Select(t => t.IdCompraNavigation.FechaVencimiento)
+                        .FirstOrDefault(),
+                        //Lote Interno asignado
+                        LoteInterno = p.Transacciones
+                        .Where(t => t.TipoTransaccion == "Compras" && t.IdCompraNavigation != null)
+                        .OrderByDescending(t => t.FechaHoraTransaccion)
+                        .Select(t => t.IdCompraNavigation.LoteInterno)
+                        .FirstOrDefault()
+                    })
+                    .ToListAsync();
+
+                foreach (var producto in productos)
+                {
+                    // Puede editar si no tiene stock y no tiene precio
+                    producto.PuedeEditar = (producto.Cantidad ?? 0) == 0 && (producto.Precio ?? 0) == 0;
+
+                    // Puede eliminar si no tiene stock
+                    producto.PuedeEliminar = (producto.Cantidad ?? 0) == 0;
+
+                    /*producto.PuedeEditar = producto.Cantidad == 0 &&
+                                           producto.Precio == 0 &&
+                                           producto.FechaVencimiento == default &&
+                                           producto.LoteInterno == null;
+
+                    producto.PuedeEliminar = producto.Cantidad == 0;*/
+                }
+
+                return productos;
+
+            }
+            catch(Exception ex) 
+            {
+                throw new Exception($"Error al obtener la lista de productos: {ex.Message}");
+            }
 
         }
 
@@ -32,14 +103,22 @@ namespace SistemaFarmacia.BLL.Implementacion
             try
             {
                 Producto producto_creado = await _ProductoRespositorio.Crear(entidad);
-                if (producto_creado.IdProducto == 0)
-                    throw new TaskCanceledException("No se puede crear el Producto");
 
-                return producto_creado;
+                if(producto_creado.IdProducto == 0)
+                    throw new TaskCanceledException("No se puee crear el producto");
+
+                var query = await _ProductoRespositorio.Consultar(p => p.IdProducto == producto_creado.IdProducto);
+
+                producto_creado = await query
+                    .Include(p =>  p.IdMarcaNavigation)
+                    .Include(p => p.IdPresentacionNavigation)
+                    .FirstOrDefaultAsync();
+
+                return producto_creado; 
             }
-            catch 
+            catch(Exception ex)
             {
-                throw;
+                throw new Exception("Error al crear producto", ex);
             }
         }
 
@@ -90,6 +169,64 @@ namespace SistemaFarmacia.BLL.Implementacion
             catch(Exception ex) 
             {
                 throw new Exception($"Error al eliminar el producto: {ex.Message}");
+            }
+        }
+
+        public async Task<bool> PuedeEditar(int idProducto)
+        {
+            try
+            {
+                var producto = await _ProductoRespositorio.Obtener(p => p.IdProducto == idProducto);
+
+                if (producto == null)
+                    return false;
+
+                var transacciones = await (await _TransaccioneRespositorio.Consultar(t => t.IdProducto == idProducto)).ToListAsync();
+
+               bool tieneVencimiento = transacciones.Any(t => t.IdCompraNavigation != null && 
+               t.IdCompraNavigation.FechaHoraCompra != null);
+
+                bool tieneLoteInterno = transacciones.Any(t => t.IdCompraNavigation != null &&
+                t.IdCompraNavigation.LoteInterno.HasValue);
+
+                if (tieneLoteInterno || tieneVencimiento)
+                    return false;
+
+                return true;
+
+            }
+            catch(Exception) 
+            {
+
+                return false;
+            }
+        }
+
+        public async Task<bool> PuedeEliminar(int idProducto)
+        {
+            try
+            {
+                var producto = await _ProductoRespositorio.Obtener(p => p.IdProducto == idProducto);
+
+                if (producto == null) 
+                    return false;
+
+                var transacciones = await (await _TransaccioneRespositorio.Consultar(t => t.IdProducto == idProducto)).ToListAsync();
+
+                // Si ya hubo transacciones → nunca permitir eliminar
+                if (transacciones.Any())
+                    return false;
+
+                // Si ya tiene precios asociados → tampoco permitir eliminar
+                if (producto.PrecioProductos.Any())
+                    return false;
+
+                return true;
+
+            }
+            catch (Exception)
+            {
+                return false; 
             }
         }
     }

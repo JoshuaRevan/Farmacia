@@ -6,9 +6,9 @@
 
         public DateTime? FechaHoraCompra { get; set; }
 
-        public decimal? TotalCompra { get; set; }
+        public decimal? TotalCompra { get; set; } //precio al que se compro el producto
 
-        public int? CantidadProductosCompra { get; set; }
+        public int? CantidadProductosCompra { get; set; } //Productos que entran al sistema
 
         public int? IdProveedor { get; set; }
 
